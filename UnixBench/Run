@@ -6,6 +6,7 @@ use POSIX qw(strftime);
 use Time::HiRes;
 use IO::Handle;
 use File::Path;
+use File::Which;
 use FindBin;
 
 
@@ -81,7 +82,7 @@ my $longIterCount = 10;
 my $shortIterCount = 3;
 
 # C compiler to use in compilation tests.
-my $cCompiler = 'gcc';
+my $cCompiler = $ENV{CC} || "cc";
 
 # Establish full paths to directories.  These need to be full pathnames
 # (or do they, any more?).  They can be set in env.
@@ -522,7 +523,15 @@ my $x86CpuFlags = {
 # process' standard output.  It's up to the caller to wait for the command
 # to terminate.
 sub command {
-    my ( $cmd ) = @_;
+    my $rexec = which 'rexec';
+    my $cmd;
+    if (!defined(which 'rexec')) {
+	( $cmd ) = @_;
+    }
+    else {
+       my @argv = split(/ /, "@_");
+       ( $cmd ) = "rexec " . $argv[0] . " disk.img -- " . "@argv[1..$#argv]";
+    }
 
     my $pid = open(my $childFd, "-|");
     if (!defined($pid)) {

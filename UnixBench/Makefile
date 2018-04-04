@@ -55,7 +55,7 @@ GL_LIBS = -lGL -lXext -lX11
 # COMPILER CONFIGURATION: Set "CC" to the name of the compiler to use
 # to build the binary benchmarks.  You should also set "$cCompiler" in the
 # Run script to the name of the compiler you want to test.
-CC=gcc
+CC?=gcc
 
 # OPTIMISATION SETTINGS:
 # Use gcc option if defined UB_GCC_OPTIONS via "Environment variable" or "Command-line arguments".
@@ -105,12 +105,12 @@ else
     # (adjust flags or comment out this section for older versions of XCode or OS X)
     # (-mmacosx-versin-min= requires at least that version of SDK be installed)
     ifneq ($(ARCH),$(filter $(ARCH),ppc64 ppc64le))
-        OPTON += -march=native -mmacosx-version-min=10.10
+        OPTON += -march=native -mmacosx-version-min=10.8
     else
         OPTON += -mcpu=native
     endif
     #http://stackoverflow.com/questions/9840207/how-to-use-avx-pclmulqdq-on-mac-os-x-lion/19342603#19342603
-    CFLAGS += -Wa,-q
+    #CFLAGS += -Wa,-q
   endif
 
 endif
@@ -126,7 +126,7 @@ CFLAGS += -Wall -pedantic $(OPTON) -I $(SRCDIR) -DTIME
 
 
 # local directories
-PROGDIR = ./pgms
+PROGDIR ?= ./pgms
 SRCDIR = ./src
 TESTDIR = ./testdir
 RESULTDIR = ./results
