@@ -6,7 +6,6 @@ use POSIX qw(strftime);
 use Time::HiRes;
 use IO::Handle;
 use File::Path;
-use File::Which;
 use FindBin;
 
 
@@ -523,14 +522,14 @@ my $x86CpuFlags = {
 # process' standard output.  It's up to the caller to wait for the command
 # to terminate.
 sub command {
-    my $rexec = which 'rexec';
     my $cmd;
-    if (!defined(which 'rexec')) {
-	( $cmd ) = @_;
-    }
-    else {
+    my $is_lkl = $ENV{"UB_OUTPUT_FILE_NAME"};
+    if ( defined($is_lkl) && $is_lkl eq "lkl" ) {
        my @argv = split(/ /, "@_");
        ( $cmd ) = "rexec " . $argv[0] . " disk.img -- " . "@argv[1..$#argv]";
+    }
+    else {
+	( $cmd ) = @_;
     }
 
     my $pid = open(my $childFd, "-|");
