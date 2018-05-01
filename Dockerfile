@@ -7,7 +7,7 @@ MAINTAINER Hajime Tazaki <thehajime@gmail.com>
 
 RUN apt-get update && \
 	apt-get install -y build-essential libx11-dev libgl1-mesa-dev \
-          libxext-dev perl perl-modules make curl git vim && \
+          libxext-dev perl perl-modules make curl git vim netperf && \
 	apt-get clean && \
         cpan install File::Which
 
