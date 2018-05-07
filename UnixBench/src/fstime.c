@@ -340,6 +340,7 @@ int r_test(int timeSecs)
                         switch(errno) {
                         case 0:
                         case EINVAL:
+                        case EFAULT:
                                 lseek(f, 0L, 0);  /* rewind at end of file */
                                 counted += (tmp+HALFCOUNT)/COUNTSIZE;
                                 continue;
