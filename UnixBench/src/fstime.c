@@ -337,13 +337,6 @@ int r_test(int timeSecs)
         while (!sigalarm) {
                 /* read while checking for an error */
                 if ((tmp=read(f, buf, bufsize)) != bufsize) {
-#ifdef __linux__
-			if (tmp == 0) {
-                                lseek(f, 0L, 0);  /* rewind at end of file */
-                                counted += (tmp+HALFCOUNT)/COUNTSIZE;
-                                continue;
-			}
-#endif
                         switch(errno) {
                         case 0:
                         case EINVAL:
@@ -407,13 +400,6 @@ int c_test(int timeSecs)
 
         while (!sigalarm) {
                 if ((tmp=read(f, buf, bufsize)) != bufsize) {
-#ifdef __linux__
-			if (tmp == 0) {
-                                lseek(f, 0L, 0);  /* rewind at end of file */
-                                lseek(g, 0L, 0);  /* rewind the output too */
-                                continue;
-			}
-#endif
                         switch(errno) {
                         case 0:
                         case EINVAL:
